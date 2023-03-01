@@ -1,0 +1,58 @@
+<?php
+
+namespace App\EventListener;
+
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Twig\Environment;
+
+class NotFoundHttpExceptionListener implements EventSubscriberInterface
+{
+    private Environment $twig;
+    private $kernel;
+
+    public function __construct(Environment $twig, KernelInterface $kernel)
+    {
+        $this->twig = $twig;
+        $this->kernel = $kernel;
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'kernel.exception' => 'onKernelException',
+        ];
+    }
+
+    public function onKernelException(ExceptionEvent $event): void
+    {
+        $exception = $event->getThrowable();
+
+        if($this->kernel->getEnvironment() === 'dev'){
+            return;
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            $response = new Response(
+                $this->twig->render('error/error404.html.twig'),
+                Response::HTTP_NOT_FOUND,
+                ['Content-Type' => 'text/html']
+            );
+            $event->setResponse($response);
+
+        }
+        else{
+
+            $response = new Response(
+                    $this->twig->render('error/error.html.twig'),
+                    Response::HTTP_NOT_FOUND,
+                    ['Content-Type' => 'text/html']
+            );
+            $event->setResponse($response);
+        }
+
+    }
+}
