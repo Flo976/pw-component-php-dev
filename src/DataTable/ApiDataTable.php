@@ -127,9 +127,9 @@ class ApiDataTable extends Bundle  {
             foreach($entitys as $entity){
                 $values = array();
                 foreach($cols as $col){
-                    $getter = 'get'.ucfirst($col);
+                    $getter = 'get'.$this->underscoreToCamelCaseAll($col);
                     if(!method_exists($entity, $getter)) {
-                        $getter = 'is'.ucfirst($col);
+                        $getter = 'is'.$this->underscoreToCamelCaseAll($col);
                     }
                     if(method_exists($entity, $getter)) {
                         $values[$col] = $entity->$getter();
@@ -205,6 +205,10 @@ class ApiDataTable extends Bundle  {
     function getTotalFiltered($totalItems, $itemsPerPage) {
         $numPages = ceil($totalItems / $itemsPerPage);
         return $numPages;
+    }
+
+    function underscoreToCamelCaseAll($str) {
+        return str_replace('_', '', ucwords($str, '_'));
     }
     
 }
