@@ -2,19 +2,18 @@
 
 namespace Pw\Command;
 
-use Pw\Generator\ApiGenerator;
-use Pw\Generator\PageGenerator;
-use Pw\Generator\ServiceGenerator;
 use Pw\Command\Resources\help\PwStr;
-use Pw\Generator\ControllerGenerator;
 use Pw\Command\Resources\help\PwValidator;
 use Pw\Command\Resources\help\PwGenerator;
 use Symfony\Component\Console\Command\Command;
+use Pw\Command\Resources\Generator\ApiGenerator;
+use Pw\Command\Resources\Generator\PageGenerator;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Pw\Command\Resources\Generator\ServiceGenerator;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: "pw-generator:generate", description: "PW Generator command")]

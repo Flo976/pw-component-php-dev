@@ -114,7 +114,13 @@ class PwStr
 
     public static function getNamespace(string $fullClassName): string
     {
-        return "App$fullClassName";
+        $key = "\\";
+        $namespace='';
+        $array = explode($key, $fullClassName);
+        for ($i=1; $i < count($array)-1 ; $i++) { 
+            $namespace = $namespace."\\".$array[$i];
+        }
+        return "App$namespace";
     }
     public static function getName(string $fullClassName): string
     {

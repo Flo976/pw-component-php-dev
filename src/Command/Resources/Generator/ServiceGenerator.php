@@ -1,5 +1,5 @@
 <?php
-namespace Pw\Generator;
+namespace Pw\Command\Resources\Generator;
 
 use Pw\Command\Resources\help\PwStr;
 use Pw\Command\Resources\help\PwGenerator;
