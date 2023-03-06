@@ -27,7 +27,7 @@ class PageGenerator {
         $model = __DIR__.'/../models/php/class_controller.php.pw';
         $content = file_get_contents($model);
         $isNewFile = PwFileManager::createFile($pathFile, $content, [
-            "name" => $name,
+            "name" => ucfirst($name),
             "namespace" => $namespace,
         ]);
 
