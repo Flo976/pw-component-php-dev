@@ -227,3 +227,5 @@ class FormulaireService {
     }
 }
 ```
+
+### Generator
