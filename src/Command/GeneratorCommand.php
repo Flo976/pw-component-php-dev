@@ -19,14 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: "pw-generator:generate", description: "PW Generator command")]
 class GeneratorCommand extends Command {
-
-    private $pwGenerator;
-
-    public function __construct(PwGenerator $pwGenerator){
-        $this->pwGenerator = $pwGenerator;
-        parent::__construct();
-    }
-
     protected function configure(): void
     {
         $this
@@ -38,7 +30,6 @@ class GeneratorCommand extends Command {
 
     // symfony console pw-pwGenerator:generate
     protected function execute(InputInterface $input, OutputInterface $output): int {
-        $pwGenerator = $this->pwGenerator;
         $io = new SymfonyStyle($input, $output);
         $argument = Command::getDefinition()->getArgument('name');
         $question = $this->question($argument->getDescription());
@@ -46,11 +37,11 @@ class GeneratorCommand extends Command {
         $type = $input->getArgument('type');
 
         if ($type == "page") {
-            PageGenerator::generate($className,  $pwGenerator, $io); 
+            PageGenerator::generate($className, $io); 
         } else if ($type == "api") {
-            ApiGenerator::generate($className,  $pwGenerator, $io); 
+            ApiGenerator::generate($className, $io); 
         }else if ($type == "service") {
-            ServiceGenerator::generate($className,  $pwGenerator, $io); 
+            ServiceGenerator::generate($className, $io); 
         }
 
         $io->success(ucfirst($type)." generated!");

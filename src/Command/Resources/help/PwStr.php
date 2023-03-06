@@ -129,13 +129,17 @@ class PwStr
         $pathToCreate='';
         $project_dir = getcwd();
         $fullClassName = '\\' . ucfirst(ltrim($fullClassName, '\\'));
+        if($folder=="templates") {
+            $fullClassName = strtolower($fullClassName);
+        }
+        
         $path = "$project_dir\\$folder$fullClassName";
         $array = explode($key, $path);
         for ($i=0; $i < count($array)-1 ; $i++) { 
             $pathToCreate = $pathToCreate."/".$array[$i];
         }
         $pathToCreate = ltrim($pathToCreate, '/');
-
+        
         if(!file_exists($pathToCreate)){
             mkdir($pathToCreate, 0777, true);
         }

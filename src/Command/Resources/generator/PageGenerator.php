@@ -2,15 +2,16 @@
 namespace Pw\Generator;
 
 use Pw\Command\Resources\help\PwStr;
+use Pw\Command\Resources\help\PwGenerator;
 use Pw\Command\Resources\help\PwValidator;
 use Pw\Command\Resources\help\PwFileManager;
 use Symfony\Component\Console\Question\Question;
 
 class PageGenerator {
 
-    public static function generate($className,  $pwGenerator, $io)
+    public static function generate($className, $io)
     {   
-        $controllerClassNameDetails =   $pwGenerator->createClassNameDetails(
+        $controllerClassNameDetails =   PwGenerator::createClassNameDetails(
                                             $className,
                                             'Controller',
                                             'Controller'
