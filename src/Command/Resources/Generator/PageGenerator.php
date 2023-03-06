@@ -134,11 +134,11 @@ class PageGenerator {
         $question = self::question($questionText, $route_url);
         $route_url = $io->askQuestion($question);
 
-        //Question for twig name
-        $twig_name = PwStr::asRoutePath($route_name).".twig.html";
-        $questionText = "Twig name of the methode <fg=blue>$methodName</>";
-        $question = self::question($questionText, $twig_name);
-        $twig_name = $io->askQuestion($question);
+        //Question for twig file
+        $twig_path = PwStr::asRoutePath($route_name).".twig.html";
+        $questionText = "Twig path file of the methode <fg=blue>$methodName</>";
+        $question = self::question($questionText, $twig_path);
+        $twig_path = $io->askQuestion($question);
 
         //Question for request type
         $request = 'POST, GET';
@@ -151,12 +151,12 @@ class PageGenerator {
         $model = __DIR__.'/../models/php/method_page.php.pw';
         $content = file_get_contents($model);
         PwFileManager::createMethod($pathFile, $content, [
-                                        'twig' => $twig_name,
                                         'name' => $methodName,
                                         'route_url' => $route_url,  
                                         'route_name' => $route_name, 
                                         'route_methods' => $request,
                                         'controller' => $controllerName, 
+                                        'twig' => ltrim($twig_path, "/"),
                                     ]);
 
         //Get the modele to generate the file of twig layout
@@ -167,8 +167,8 @@ class PageGenerator {
         //Get the modele to generate the file of the twig page
         $model = __DIR__.'/../models/twig/page.twig.pw';
         $content = file_get_contents($model);
-        $twig_name = str_replace('/', '\\', $twig_name);
-        $twigDirectory = PwStr::getPath(substr($twig_name, 1), 'templates');
+        $twig_path = str_replace('/', '\\', $twig_path);
+        $twigDirectory = PwStr::getPath($twig_path, 'templates');
         PwFileManager:: createFile($twigDirectory, $content, [
                             "title" => $controllerName,
                             "entrypoint" => $route_name,
@@ -251,7 +251,7 @@ class PageGenerator {
             "path" => "$pathIndex"
         ]);
         
-        return $twig_name;
+        return ltrim($twig_path, "/");
     }
 
     /**

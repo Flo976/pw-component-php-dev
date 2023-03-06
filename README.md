@@ -229,3 +229,28 @@ class FormulaireService {
 ```
 
 ### Generator
+#### Importation de la classe
+```php
+use Pw\Command\GeneratorCommand
+```
+#### Exemple d’utilisation
+##### Create a command ```pw-generator:generate```  in your proge
+```
+php bin/console make:command
+```
+##### Importing the class ```use Pw\Command\GeneratorCommand``` into the command
+```php
+namespace App\Command;
+
+use Pw\Command\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+
+#[AsCommand(
+    name: 'pw-generator:generate',
+    description: 'PW Generator command',
+)]
+class GenerateCommand extends GeneratorCommand
+{
+
+}
+```
