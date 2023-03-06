@@ -288,6 +288,5 @@ class PageGenerator {
         $route_methods = substr($route_methods, 0, strlen($route_methods) - 1);
 
         return $route_methods;
-    }
-    
+    } 
 }

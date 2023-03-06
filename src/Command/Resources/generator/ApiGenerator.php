@@ -189,5 +189,4 @@ class ApiGenerator {
 
         return $route_methods;
     }
-    
 }

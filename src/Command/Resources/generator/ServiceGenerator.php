@@ -147,5 +147,4 @@ class ServiceGenerator {
 
         return $question;
     }
-    
 }
