@@ -1,0 +1,17 @@
+<?php
+
+namespace {{namespace}};
+
+use Doctrine\ORM\EntityManagerInterface;
+
+class {{name}} {
+
+    private $em;
+
+    public function __construct(
+        EntityManagerInterface $em
+    )
+    {
+        $this->em = $em;
+    }
+}

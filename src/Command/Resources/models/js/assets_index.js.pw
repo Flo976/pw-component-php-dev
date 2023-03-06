@@ -1,0 +1,5 @@
+import {main} from "./{{main_filename}}";
+
+$(document).ready(() => {
+	main();
+});

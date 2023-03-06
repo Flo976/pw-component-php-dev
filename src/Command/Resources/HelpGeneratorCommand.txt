@@ -1,0 +1,17 @@
+The <info>%command.name%</info> command to generate a page or an API or a service.
+
+<info>php %command.full_name% --page or --api or --service</info>
+
+If the argument is missing, the command will ask for the page class name interactively.
+
+To generate a page:
+
+<info>php %command.full_name% --page</info>
+
+To generate a API:
+
+<info>php %command.full_name% --api</info>
+
+To generate a service:
+
+<info>php %command.full_name% --service</info>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+
+    <link rel="icon" type="image/x-icon" href="[[:brace]]asset('images/favicon.ico')[[brace:]]">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+    {% block body %}
+        <div id="app_body_wrapper">
+        </div>
+    {% endblock %}
+
+    {% block modals %}
+        <div id="app_modal_wrapper">
+        </div>
+    {% endblock %}
+
+    {% block variables_javascripts %}
+    {% endblock %}
+
+    {% block javascripts %}
+    {% endblock %}
+</body>
+
+</html>
