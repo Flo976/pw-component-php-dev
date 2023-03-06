@@ -281,7 +281,7 @@ class PageGenerator {
         $route_methods = "";
         $requests = explode(",", $request);
         foreach ($requests as $request) {
-            $request = trim($request);
+            $request = strtoupper(trim($request));
             $route_methods .= "'$request', ";
         }
         $route_methods = substr($route_methods, 0, strlen($route_methods) - 1);
