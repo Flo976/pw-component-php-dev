@@ -32,7 +32,7 @@ class ServiceGenerator {
         ]);
 
         //Show controller file path create
-        PwFileManager::dumpFile($namespace, $isNewFile, "service", $io);
+        PwFileManager::dumpFile(PwStr::getNamespaceByExt($pathFile), $isNewFile, "service", $io);
         
         $isAddMethod = true;
         $currentMethods = self::getAllMethods($pathFile);

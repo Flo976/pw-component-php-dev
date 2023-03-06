@@ -134,6 +134,7 @@ class PwStr
         $key = "\\";
         $pathToCreate='';
         $project_dir = getcwd();
+        $fullClassName = implode('\\', array_map('ucfirst', explode('\\', $fullClassName)));
         $fullClassName = '\\' . ucfirst(ltrim($fullClassName, '\\'));
         if($folder=="templates") {
             $fullClassName = strtolower($fullClassName);
@@ -243,6 +244,13 @@ class PwStr
     public static function asHumanWords(string $variableName): string
     {
         return str_replace('  ', ' ', ucfirst(trim(implode(' ', preg_split('/(?=[A-Z])/', $variableName)))));
+    }
+
+    public static function getNamespaceByExt(string $pathFile): string
+    {
+        $project_dir = getcwd();
+        $fixed_string = str_replace($project_dir, "", $pathFile);
+        return $fixed_string;
     }
     
 }

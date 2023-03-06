@@ -32,7 +32,7 @@ class ApiGenerator {
         ]);
 
         //Show controller file path create
-        PwFileManager::dumpFile($namespace, $isNewFile, "controller", $io);
+        PwFileManager::dumpFile(PwStr::getNamespaceByExt($pathFile), $isNewFile, "controller", $io);
         
         $isAddMethod = true;
         $currentMethods = self::getAllMethods($pathFile);
