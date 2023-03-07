@@ -123,7 +123,7 @@ class ServiceGenerator {
         if (!$methodName) {
             return null;
         }
-        
+        $methodName = PwStr::formatFunction($methodName);
         //Get the modele to generate the method $methodName
         $model = __DIR__.'/../models/php/method_service.php.pw';
         $content = file_get_contents($model);

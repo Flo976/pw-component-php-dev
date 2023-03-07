@@ -41,6 +41,7 @@ class ServiceV1Generator {
             $dataMethods = [];
             $methods = explode(",", $methods);
             foreach ($methods as $method) {
+                $method = PwStr::formatFunction($method);
                 if (\in_array($method, $currentMethods)) {} else {
                     //Get the modele to generate the method $methodName
                     $model = __DIR__.'/../models/php/method_service.php.pw';

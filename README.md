@@ -261,12 +261,12 @@ class GenerateCommand extends GeneratorCommand
 
 ##### Pour créer une page 
 ```
-php bin/console pw-generator:generate page front index -r page_front_index -u /page/front/index -t /page/front/index.twig.html --request POST
+php bin/console pw-generator:generate page front index -r page_front_index -u /page/front/index -t /page/front/index.twig.html --request="POST"
 ```
 
 ##### Pour créer un API
 ```
-php bin/console pw-generator:generate api front index -r api_front_index -u /api/front/index --request POST
+php bin/console pw-generator:generate api front index -r api_front_index -u /api/front/index --request="POST"
 ```
 
 ##### Pour créer un service 

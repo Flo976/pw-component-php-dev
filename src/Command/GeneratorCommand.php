@@ -36,7 +36,7 @@ class GeneratorCommand extends Command {
             ->addArgument('method', InputArgument::OPTIONAL, sprintf('Method of the page/api/service to create or update (e.g. <fg=yellow>%s</>)', $method), $method)
             ->addOption('route-name', 'r', InputOption::VALUE_OPTIONAL, 'Add the route name of the method (e.g. <fg=yellow>'.$route_name.'</>)')
             ->addOption('uri', 'u', InputOption::VALUE_OPTIONAL, 'Add the route url of the method (e.g. <fg=yellow>'.$uri.'</>)')
-            ->addOption('request',null, InputOption::VALUE_OPTIONAL, 'Add the HTTP request methods POST/GET', 'POST')
+            ->addOption('request',null, InputOption::VALUE_OPTIONAL, 'Add the HTTP request methods POST/GET', 'POST, GET')
             ->addOption('twig', 't', InputOption::VALUE_OPTIONAL, 'Add the twig path file of the method (e.g. <fg=yellow>'.$twig.'</>)')
             ->addOption('methods','m', InputOption::VALUE_OPTIONAL, 'Add the list of the method (e.g <fg=yellow>save, load, list</>)')
             ->setHelp(file_get_contents(__DIR__.'/Resources/HelpGeneratorCommand.txt'))

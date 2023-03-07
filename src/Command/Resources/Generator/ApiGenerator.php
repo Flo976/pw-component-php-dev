@@ -117,13 +117,16 @@ class ApiGenerator {
             return $name;
         });
 
+
         if (!$methodName) {
             return null;
         }
 
+        $methodName = PwStr::formatFunction($methodName);
+
         //Question for route name
         $className = PwStr::asRouteName($className);
-        $route_name = $type."_".$className."_".PwStr::asRouteName($methodName);
+        $route_name = "api_".$className."_".PwStr::asRouteName($methodName);
         $questionText = "Route name of the methode <fg=blue>$methodName</>";
         $question = self::question($questionText, $route_name);
         $route_name = $io->askQuestion($question);

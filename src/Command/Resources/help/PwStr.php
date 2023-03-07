@@ -267,5 +267,12 @@ class PwStr
         $fixed_string = str_replace($project_dir, "", $pathFile);
         return $fixed_string;
     }
+
+    public static function formatFunction(string $name): string
+    {
+        $name = str_replace('"', "", $name);
+        $name = str_replace("'", "", $name);
+        return $name;
+    }
     
 }

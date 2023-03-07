@@ -22,6 +22,7 @@ class PageV1Generator {
                                             'Controller'
                                         );
         $dataMethods = [];
+        $methodName = PwStr::formatFunction($methodName);
         $name = ucfirst($controllerClassNameDetails->getShortName());
         $controllerClassName = $controllerClassNameDetails->getFullName();
         $namespace = PwStr::getNamespace($controllerClassName, $type);
@@ -62,7 +63,7 @@ class PageV1Generator {
                         : PwStr::asRoutePath($route_name).".twig.html";
 
         //Request type
-        $request = $request ? $request : 'POST';
+        $request = $request ? $request : 'POST, GET';
         $request = self::formatRequest($request);
         
         //Get the modele to generate the method $methodName

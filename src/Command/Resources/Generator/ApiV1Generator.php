@@ -22,6 +22,7 @@ class ApiV1Generator {
                                             'Controller'
                                         );
         $dataMethods = [];
+        $methodName = PwStr::formatFunction($methodName);
         $name = ucfirst($controllerClassNameDetails->getShortName());
         $controllerClassName = $controllerClassNameDetails->getFullName();
         $namespace = PwStr::getNamespace($controllerClassName, $type);
@@ -56,7 +57,7 @@ class ApiV1Generator {
                         ? $route_url
                         : PwStr::asRoutePath($route_name);
         //Request type
-        $request = $request ? $request : 'POST';
+        $request = $request ? $request : 'POST, GET';
         $request = self::formatRequest($request);
         
         //Get the modele to generate the method $methodName
