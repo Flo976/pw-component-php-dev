@@ -1,17 +1,21 @@
-The <info>%command.name%</info> command to generate a page or an API or a service.
+The <info>%command.name% type </info> command to generate a page or an API or a service (<info>type</info> = page or api or service).
 
-<info>php %command.full_name% --page or --api or --service</info>
+You can also add the <info>name</info> of the page or of an API or service directly in the command (e.g front)
+<info>php %command.full_name% type front </info>
 
-If the argument is missing, the command will ask for the page class name interactively.
+You can also add the <info>method</info> of the page or of an API or service directly in the command  (e.g index)
+<info>php %command.full_name% type name index </info>
 
-To generate a page:
+If the argument is missing, the command will ask for the page/api/service class name interactively.
 
-<info>php %command.full_name% --page</info>
+Example to generate a <info>page front</info> with the method <info>index</info>:
 
-To generate a API:
+<info>php %command.full_name% page front index -r page_front_index -u /page/front/index -t /page/front/index/index.twig.html --request POST</info>
 
-<info>php %command.full_name% --api</info>
+Example to generate a <info>api front</info> with the method <info>index</info>:
 
-To generate a service:
+<info>php %command.full_name% api front index -r api_front_index -u /api/front/index --request POST</info>
 
-<info>php %command.full_name% --service</info>
+Example to generate a <info>service front</info> with the methods <info>save, load, list</info> (separate by comma):
+
+<info>php %command.full_name% service front -m "save, load, list"</info>

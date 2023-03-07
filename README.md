@@ -229,16 +229,18 @@ class FormulaireService {
 ```
 
 ### Generator
+
+##### Créez une commande  ```pw-generator:generate```  dans le projet
+```
+php bin/console make:command
+```
+
 #### Importation de la classe
 ```php
 use Pw\Command\GeneratorCommand
 ```
-#### Exemple d’utilisation
-##### Create a command ```pw-generator:generate```  in your proge
-```
-php bin/console make:command
-```
-##### Importing the class ```use Pw\Command\GeneratorCommand``` into the command
+#### ```extends```  de la classe
+
 ```php
 namespace App\Command;
 
@@ -253,4 +255,31 @@ class GenerateCommand extends GeneratorCommand
 {
 
 }
+```
+#### Exemple d’utilisation
+```php bin/console pw-generator:generate <type> <name> <method> [options]```
+
+##### Pour créer une page 
+```
+php bin/console pw-generator:generate page front index -r page_front_index -u /page/front/index -t /page/front/index.twig.html --request POST
+```
+
+##### Pour créer un API
+```
+php bin/console pw-generator:generate api front index -r api_front_index -u /api/front/index --request POST
+```
+
+##### Pour créer un service 
+```
+php bin/console pw-generator:generate service front -m "save, load, list"
+```
+
+##### Pour avoir de l'aide 
+```
+php bin/console pw-generator:generate --help
+```
+
+##### Utilisation de la commande en mode interactif (type ='page ou service ou api')
+```
+php bin/console pw-generator:generate <type>
 ```

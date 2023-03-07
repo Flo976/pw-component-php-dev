@@ -20,9 +20,13 @@ class PwFileManager
         return ob_get_clean();
     }
 
-    public static function dumpFile(string $filename, bool  $isNewFile, string $type, $io): void
+    public static function dumpFile(string $filename, bool  $isNewFile, string $type, $io, bool  $isLine = false ): void
     {
-        $comment = $isNewFile ? '<fg=blue>'.$type.' generated! Now let\'s add some methods!</>' : '<fg=yellow>your '.$type.' already exists! So let\'s add some new methods!</>';
+        if($isLine) {
+            $comment = '<fg=blue>'.$type.' generated!</>';
+        } else {
+            $comment = $isNewFile ? '<fg=blue>'.$type.' generated! Now let\'s add some methods!</>' : '<fg=yellow>your '.$type.' already exists! So let\'s add some new methods!</>';
+        }
         
         if ($io) {
             $io->comment(sprintf(

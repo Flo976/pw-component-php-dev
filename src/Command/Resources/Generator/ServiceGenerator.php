@@ -17,11 +17,14 @@ class ServiceGenerator {
                                             'Service'
                                         );
         $dataMethods = [];
+        $name = ucfirst($controllerClassNameDetails->getShortName());
         $controllerClassName = $controllerClassNameDetails->getFullName();
-        $namespace = PwStr::getNamespace($controllerClassName);
-        $directory = PwStr::getPath($controllerClassName);
-        $pathFile = PwStr::getPathFilename($directory);
-        $name = PwStr::getName($controllerClassName);
+        $namespace = PwStr::getNamespace($controllerClassName, null);
+        $namespace = rtrim($namespace, "\\");
+        $directory = PwStr::getPath($namespace);
+        $pathFile = PwStr::getPathFilename($directory, $name);
+        $pathFile = str_replace("\\\\", "\\", $pathFile);
+        
 
         //Get the modele to create the file of the controller
         $model = __DIR__.'/../models/php/class_service.php.pw';
@@ -99,9 +102,9 @@ class ServiceGenerator {
         $io->writeln('');
 
         if ($isFirstMethod) {
-            $questionText = 'New method name e.g. <fg=yellow>index</> (press <return> to stop adding methods)';
+            $questionText = 'New method name e.g. <fg=yellow>list</> (press <return> to stop adding methods)';
         } else {
-            $questionText = 'Add another method? Enter the methode name e.g. <fg=yellow>index</> (or press <return> to stop adding methods)';
+            $questionText = 'Add another method? Enter the methode name e.g. <fg=yellow>list</> (or press <return> to stop adding methods)';
         }
 
         $methodName = $io->ask($questionText, null, function ($name) use ($methods) {
@@ -127,6 +130,7 @@ class ServiceGenerator {
         PwFileManager::createMethod($pathFile, $content, [
                                         'name' => $methodName
                                     ]);
+
 
         return $methodName;
     }

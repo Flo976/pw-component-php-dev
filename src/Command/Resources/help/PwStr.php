@@ -112,13 +112,22 @@ class PwStr
         return substr($fullClassName, strrpos($fullClassName, '\\') + 1);
     }
 
-    public static function getNamespace(string $fullClassName): string
+    public static function getNamespace(string  $fullClassName, string $className=null): string
     {
         $key = "\\";
-        $namespace='';
+        $namespace = '';
+        $className = $className ? ucfirst($className) : null;
         $array = explode($key, $fullClassName);
         for ($i=1; $i < count($array)-1 ; $i++) { 
-            $namespace = $namespace."\\".$array[$i];
+            if($i == 2 && $className) {
+                $namespace = $namespace."\\".$className."\\".ucfirst($array[$i]);
+            } else {
+                $namespace = $namespace."\\".ucfirst($array[$i]); 
+            }
+        }
+
+        if(count($array)-1 < 3 ) {
+            return "App$namespace"."\\".$className;
         }
         return "App$namespace";
     }
@@ -132,19 +141,29 @@ class PwStr
     public static function getPath($fullClassName, $folder='src'): string
     {
         $key = "\\";
-        $pathToCreate='';
+        $pathToCreate = '';
         $project_dir = getcwd();
         $fullClassName = implode('\\', array_map('ucfirst', explode('\\', $fullClassName)));
         $fullClassName = '\\' . ucfirst(ltrim($fullClassName, '\\'));
-        if($folder=="templates") {
+        $fullClassName = str_replace('App', $folder, $fullClassName);
+        if($folder == "templates") {
             $fullClassName = strtolower($fullClassName);
+            $fullClassName = '\\' .$folder.$fullClassName;
         }
         
-        $path = "$project_dir\\$folder$fullClassName";
+        $path = "$project_dir$fullClassName";
         $array = explode($key, $path);
-        for ($i=0; $i < count($array)-1 ; $i++) { 
-            $pathToCreate = $pathToCreate."/".$array[$i];
+        
+        if($folder == "templates") {
+            for ($i=0; $i < count($array)-1 ; $i++) {
+                $pathToCreate = $pathToCreate."/".$array[$i];
+            }
+        } else {
+            for ($i=0; $i < count($array) ; $i++) {
+                $pathToCreate = $pathToCreate."/".$array[$i];
+            }
         }
+
         $pathToCreate = ltrim($pathToCreate, '/');
         
         if(!file_exists($pathToCreate)){
@@ -154,12 +173,8 @@ class PwStr
         return $path;
     }
 
-    public static function getPathFilename($fullClassName, $extension=false){
-        if(!is_int(strpos($fullClassName, ".php"))){
-            $fullClassName = "$fullClassName.php";
-        }
-
-        return $fullClassName;
+    public static function getPathFilename(string $directory, $file){
+        return "$directory\\$file.php";
     }
 
     public static function asFilePath(string $value): string

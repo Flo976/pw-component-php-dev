@@ -9,7 +9,7 @@ use Symfony\Component\Console\Question\Question;
 
 class ApiGenerator {
 
-    public static function generate($className, $io)
+    public static function generate($className, $type, $io)
     {   
         $controllerClassNameDetails =   PwGenerator::createClassNameDetails(
                                             $className,
@@ -17,11 +17,11 @@ class ApiGenerator {
                                             'Controller'
                                         );
         $dataMethods = [];
+        $name = ucfirst($controllerClassNameDetails->getShortName());
         $controllerClassName = $controllerClassNameDetails->getFullName();
-        $namespace = PwStr::getNamespace($controllerClassName);
-        $directory = PwStr::getPath($controllerClassName);
-        $pathFile = PwStr::getPathFilename($directory);
-        $name = PwStr::getName($controllerClassName);
+        $namespace = PwStr::getNamespace($controllerClassName, $type);
+        $directory = PwStr::getPath($namespace);
+        $pathFile = PwStr::getPathFilename($directory, $name);
 
         //Get the modele to create the file of the controller
         $model = __DIR__.'/../models/php/class_controller.php.pw';
@@ -123,7 +123,7 @@ class ApiGenerator {
 
         //Question for route name
         $className = PwStr::asRouteName($className);
-        $route_name = $className."_".PwStr::asRouteName($methodName);
+        $route_name = $type."_".$className."_".PwStr::asRouteName($methodName);
         $questionText = "Route name of the methode <fg=blue>$methodName</>";
         $question = self::question($questionText, $route_name);
         $route_name = $io->askQuestion($question);

@@ -28,7 +28,7 @@ final class PwClassNameDetails
 
     public function getFullName(): string
     {
-        return $this->fullClassName;
+        return ucfirst($this->fullClassName) ;
     }
 
     public function getShortName(): string

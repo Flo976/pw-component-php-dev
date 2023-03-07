@@ -33,17 +33,17 @@ class PwGenerator
      */
     public static function createClassNameDetails(string $name, string $namespacePrefix, string $suffix = '', string $validationErrorMessage = ''): PwClassNameDetails
     {
-        
+        $name = implode('\\', array_map('ucfirst', explode('\\', $name)));
         $fullNamespacePrefix = self::$namespacePrefix.'\\'.$namespacePrefix;
         if ('\\' === $name[0]) {
             // class is already "absolute" - leave it alone (but strip opening \)
-            $className = substr($name, 1);
+            $className = substr(ucfirst($name), 1);
         } else {
-            $className = rtrim($fullNamespacePrefix, '\\').'\\'.PwStr::asClassName($name, $suffix);
+            $className = rtrim($fullNamespacePrefix, '\\').'\\'.PwStr::asClassName(ucfirst($name), $suffix);
         }
 
         PwValidator::validateClassName($className, $validationErrorMessage);
 
-        return new PwClassNameDetails($className, $fullNamespacePrefix, $suffix);
+        return new PwClassNameDetails(ucfirst($className), $fullNamespacePrefix, $suffix);
     }
 }

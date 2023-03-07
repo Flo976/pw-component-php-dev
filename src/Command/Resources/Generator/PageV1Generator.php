@@ -3,14 +3,19 @@ namespace Pw\Command\Resources\Generator;
 
 use Pw\Command\Resources\help\PwStr;
 use Pw\Command\Resources\help\PwGenerator;
-use Pw\Command\Resources\help\PwValidator;
 use Pw\Command\Resources\help\PwFileManager;
-use Symfony\Component\Console\Question\Question;
 
-class PageGenerator {
+class PageV1Generator {
 
-    public static function generate($className, $type, $io)
-    {   
+    public static function generate( $data, $io) {   
+        $type = $data['type' ] ? $data['type'] : 'page';
+        $request = $data['request' ] ? $data['request'] : 'POST';
+        $className = $data['className'] ? $data['className'] : null;       
+        $route_url = $data['route_url' ] ? $data['route_url'] : null;
+        $twig_path = $data['twig_path' ] ? $data['twig_path'] : null;
+        $route_name = $data['route_name' ] ? $data['route_name'] : null;
+        $methodName = $data['methodName' ] ? $data['methodName'] : 'index';
+
         $controllerClassNameDetails =   PwGenerator::createClassNameDetails(
                                             $className,
                                             'Controller',
@@ -32,130 +37,43 @@ class PageGenerator {
         ]);
 
         //Show controller file path create
-        PwFileManager::dumpFile(PwStr::getNamespaceByExt($pathFile), $isNewFile, "controller", $io);
+        PwFileManager::dumpFile(PwStr::getNamespaceByExt($pathFile), $isNewFile, "controller", $io, true);
         
-        $isAddMethod = true;
         $currentMethods = self::getAllMethods($pathFile);
 
-        //New methods, do the treatment askForNextMethod
-        while ($isAddMethod) { 
-            $data = self::askForNextMethod($io, $currentMethods, $pathFile, $name, $isNewFile, $className);
-            if(!$data) {
-                $isAddMethod = false;
-            } else {
-                $dataMethods[] = $data;
-            }
-            $isNewFile = false;
+        if (\in_array($methodName, $currentMethods)) {
+            throw new \InvalidArgumentException(sprintf('The "%s" method already exists.', $methodName));
         }
 
-        foreach ($dataMethods as $data) {
-            //Show twig file path create
-            PwFileManager::dumpOtherFile($data, "twig", $io);
-        }
-    }
-
-    /**
-     * 
-     * Return the list of methods in the controller by file path
-     * 
-     * @param string $filePath
-     * @return array
-    */
-    public static function getAllMethods(string $filePath) : array {
-
-        // Get the contents of the controller file
-        $fileContents = file_get_contents($filePath);
-
-        // Search for function definitions
-        preg_match_all('/function\s+(\w+)\s*\(/', $fileContents, $matches);
-
-        // Return the function names
-        return $matches[1];
-        
-    }
-
-    /**
-     * 
-     * This function is used to request information about the method to be added,
-     * such as the method name, URI, name of the twig, request type, etc
-     * 
-     * @param objet $io
-     * @param array $methods
-     * @param string $pathFile
-     * @param string $controllerName
-     * @param string $isFirstMethod
-     * @param string $className
-     * @return string
-    */
-    public static function askForNextMethod( 
-        $io, 
-        array $methods, 
-        string $pathFile, 
-        string $controllerName, 
-        bool $isFirstMethod, 
-        string $className
-    ){
-
-        $io->writeln('');
-
-        if ($isFirstMethod) {
-            $questionText = 'New method name e.g. <fg=yellow>index</> (press <return> to stop adding methods)';
-        } else {
-            $questionText = 'Add another method? Enter the methode name e.g. <fg=yellow>index</> (or press <return> to stop adding methods)';
-        }
-
-        $methodName = $io->ask($questionText, null, function ($name) use ($methods) {
-            // allow it to be empty
-            if (!$name) {
-                return $name;
-            }
-            
-            if (\in_array($name, $methods)) {
-                throw new \InvalidArgumentException(sprintf('The "%s" method already exists.', $name));
-            }
-
-            return $name;
-        });
-
-        if (!$methodName) {
-            return null;
-        }
-
-        //Question for route name
+        //Route name
         $className = PwStr::asRouteName($className);
-        $route_name = $type."_".$className."_".PwStr::asRouteName($methodName);
-        $questionText = "Route name of the methode <fg=blue>$methodName</>";
-        $question = self::question($questionText, $route_name);
-        $route_name = $io->askQuestion($question);
+        $route_name = $route_name 
+                        ? $route_name : 
+                        $type."_".$className."_".PwStr::asRouteName($methodName);
 
-        //Question for url name
-        $route_url = PwStr::asRoutePath($route_name);
-        $questionText = "Route url of the methode <fg=blue>$methodName</>";
-        $question = self::question($questionText, $route_url);
-        $route_url = $io->askQuestion($question);
+        //Url name
+        $route_url = $route_url 
+                        ? $route_url
+                        : PwStr::asRoutePath($route_name);
 
-        //Question for twig file
-        $twig_path = PwStr::asRoutePath($route_name).".twig.html";
-        $questionText = "Twig path file of the methode <fg=blue>$methodName</>";
-        $question = self::question($questionText, $twig_path);
-        $twig_path = $io->askQuestion($question);
+        //Twig file
+        $twig_path = $twig_path
+                        ? $twig_path
+                        : PwStr::asRoutePath($route_name).".twig.html";
 
-        //Question for request type
-        $request = 'POST';
-        $questionText = "Request of the methode <fg=blue>$methodName</>";
-        $question = self::question($questionText, $request);
-        $request  =  $io->askQuestion($question);
+        //Request type
+        $request = $request ? $request : 'POST';
         $request = self::formatRequest($request);
         
         //Get the modele to generate the method $methodName
         $model = __DIR__.'/../models/php/method_page.php.pw';
         $content = file_get_contents($model);
         PwFileManager::createMethod($pathFile, $content, [
+                                        'controller' => $name, 
                                         'name' => $methodName,
                                         'route_url' => $route_url,  
                                         'route_name' => $route_name, 
                                         'route_methods' => $request,
-                                        'controller' => $controllerName, 
                                         'twig' => ltrim($twig_path, "/"),
                                     ]);
 
@@ -170,11 +88,11 @@ class PageGenerator {
         $twig_path = str_replace('/', '\\', $twig_path);
         $twigDirectory = PwStr::getPath($twig_path, 'templates');
         PwFileManager:: createFile($twigDirectory, $content, [
-                            "title" => $controllerName,
+                            "title" => $name,
+                            "description" => $name,
                             "entrypoint" => $route_name,
                             "layout" => 'layout.twig.html',
                             "webpack_config" => $route_name,
-                            "description" => $controllerName,
                         ]);
 
 
@@ -250,25 +168,29 @@ class PageGenerator {
             "name" => $route_name,
             "path" => "$pathIndex"
         ]);
+
+        PwFileManager::dumpOtherFile($twig_path, "twig", $io);
         
-        return ltrim($twig_path, "/");
     }
 
     /**
      * 
-     * $default is the default answer to the question asked
+     * Return the list of methods in the controller by file path
      * 
-     * @param string $questionText
-     * @param mixed $default
+     * @param string $filePath
      * @return array
     */
-    public static function question(
-        string $questionText, mixed $default = null): Question
-    {
-        $question = new Question($questionText, $default);
-        $question->setValidator([PwValidator::class, 'notBlank']);
+    public static function getAllMethods(string $filePath) : array {
 
-        return $question;
+        // Get the contents of the controller file
+        $fileContents = file_get_contents($filePath);
+
+        // Search for function definitions
+        preg_match_all('/function\s+(\w+)\s*\(/', $fileContents, $matches);
+
+        // Return the function names
+        return $matches[1];
+        
     }
 
     /**
