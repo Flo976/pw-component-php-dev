@@ -855,14 +855,11 @@ Modification du fichier services.yaml pour autoriser le autowire de Pw\Command\G
 #### Exemple d'utilisation 
 
 ###### Pour créer une page front
-```php bin/console pw-generator:generate page front
-```
+```php bin/console pw-generator:generate page front```
 ###### Pour créer un API front
-```php bin/console pw-generator:generate api front
-```
+```php bin/console pw-generator:generate api front```
 ###### Pour créer un service front
-```php bin/console pw-generator:generate service front
-```
+```php bin/console pw-generator:generate service front```
 
 #### Syntaxe
 ```php bin/console pw-generator:generate <type> <name> <method> [options]```
