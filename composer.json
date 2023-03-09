@@ -8,7 +8,7 @@
             "name": "passion-web"
         }
     ],
-    "version": "0.0.25",
+    "version": "0.0.26",
     "require": {
         "php": "^8.0",
         "dompdf/dompdf": "^2.0",

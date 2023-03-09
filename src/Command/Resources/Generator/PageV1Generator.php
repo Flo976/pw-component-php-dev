@@ -22,7 +22,7 @@ class PageV1Generator {
                                             'Controller'
                                         );
         $dataMethods = [];
-        $webpackName = strtolower($className);
+        $webpackName = strtolower(PwStr::asRouteName($className));
         $methodName = PwStr::formatFunction($methodName);
         $name = ucfirst($controllerClassNameDetails->getShortName());
         $controllerClassName = $controllerClassNameDetails->getFullName();
@@ -48,7 +48,7 @@ class PageV1Generator {
         }
 
         //Entry point name
-        $entryPointName = strtolower($className)."_".PwStr::asRouteName($methodName);
+        $entryPointName = $webpackName."_".PwStr::asRouteName($methodName);
 
         //Route name
         $className = PwStr::asRouteName($className);

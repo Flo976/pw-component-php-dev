@@ -121,7 +121,7 @@ class PageGenerator {
             return null;
         }
 
-        $webpackName = strtolower($className);
+        $webpackName = strtolower(PwStr::asRouteName($className));
         $methodName = PwStr::formatFunction($methodName);
         //Question for route name
         $className = PwStr::asRouteName($className);
@@ -130,7 +130,7 @@ class PageGenerator {
         $question = self::question($questionText, $route_name);
         $route_name = $io->askQuestion($question);
 
-        $entryPointName = strtolower($className)."_".PwStr::asRouteName($methodName);
+        $entryPointName = $webpackName."_".PwStr::asRouteName($methodName);
 
         //Question for url name
         $route_url = PwStr::asRoutePath($route_name);
