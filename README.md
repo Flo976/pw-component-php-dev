@@ -230,46 +230,40 @@ class FormulaireService {
 
 ### Generator
 
-##### Créez une commande  ```pw-generator:generate```  dans le projet
+#### Configuration 
+Modification du fichier services.yaml pour autoriser le autowire de Pw\Command\GeneratorCommand autowire: true
+```yaml
+    Pw\Command\GeneratorCommand:
+        # redundant thanks to _defaults, but value is overridable on each service
+        autowire: true
 ```
-php bin/console make:command
-```
 
-#### Importation de la classe
-```php
-use Pw\Command\GeneratorCommand
-```
-#### ```extends```  de la classe
-
-```php
-namespace App\Command;
-
-use Pw\Command\GeneratorCommand;
-use Symfony\Component\Console\Attribute\AsCommand;
-
-#[AsCommand(
-    name: 'pw-generator:generate',
-    description: 'PW Generator command',
-)]
-class GenerateCommand extends GeneratorCommand
-{
-
-}
-```
 #### Exemple d’utilisation
+###### Pour créer une page front
+```php bin/console pw-generator:generate page front
+```
+###### Pour créer un API front
+```php bin/console pw-generator:generate api front
+```
+###### Pour créer un service front
+```php bin/console pw-generator:generate service front
+```
+
+#### Syntaxe
 ```php bin/console pw-generator:generate <type> <name> <method> [options]```
 
-##### Pour créer une page 
+#### Autres utilisations avec les options 
+##### Pour créer une page front avec une méthode index
 ```
 php bin/console pw-generator:generate page front index -r page_front_index -u /page/front/index -t /page/front/index.twig.html --request="GET"
 ```
 
-##### Pour créer un API
+##### Pour créer un API front avec une méthode index
 ```
 php bin/console pw-generator:generate api front index -r api_front_index -u /api/front/index --request="POST"
 ```
 
-##### Pour créer un service 
+##### Pour créer un service front avec les méthodes save, load, list
 ```
 php bin/console pw-generator:generate service front -m "save, load, list"
 ```
@@ -283,3 +277,4 @@ php bin/console pw-generator:generate --help
 ```
 php bin/console pw-generator:generate <type>
 ```
+

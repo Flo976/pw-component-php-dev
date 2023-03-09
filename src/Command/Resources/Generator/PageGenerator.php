@@ -121,6 +121,7 @@ class PageGenerator {
             return null;
         }
 
+        $webpackName = strtolower($className);
         $methodName = PwStr::formatFunction($methodName);
         //Question for route name
         $className = PwStr::asRouteName($className);
@@ -128,6 +129,8 @@ class PageGenerator {
         $questionText = "Route name of the methode <fg=blue>$methodName</>";
         $question = self::question($questionText, $route_name);
         $route_name = $io->askQuestion($question);
+
+        $entryPointName = strtolower($className)."_".PwStr::asRouteName($methodName);
 
         //Question for url name
         $route_url = PwStr::asRoutePath($route_name);
@@ -172,9 +175,9 @@ class PageGenerator {
         $twigDirectory = PwStr::getPath($twig_path, 'templates');
         PwFileManager:: createFile($twigDirectory, $content, [
                             "title" => $controllerName,
-                            "entrypoint" => $route_name,
+                            "entrypoint" => $entryPointName,
                             "layout" => 'layout.twig.html',
-                            "webpack_config" => $route_name,
+                            "webpack_config" => $webpackName,
                             "description" => $controllerName,
                         ]);
 
@@ -183,40 +186,43 @@ class PageGenerator {
         //Get the modele to generate the file of the webpack config
         $model = __DIR__.'\..\models\js\webpack_config.js.pw';
         $content = file_get_contents($model);
-        $pathWebpack = PwFileManager::getPathWebpack($route_name);
-        PwFileManager::createWebpack($pathWebpack, $content, ["name" => $route_name]);
+        $pathWebpack = PwFileManager::getPathWebpack($webpackName);
+        PwFileManager::createWebpack($pathWebpack, $content, ["name" => $webpackName]);
 
-        /**** Insert to encore ****/
-        //Get the modele to generate the file of the webpack config
-        $model = __DIR__.'/../models/yaml/webpack_encore.yaml.pw';
-        $content = file_get_contents($model);
-        $encorePath = PwFileManager::createWebpackConfig($content);
+        if($isFirstMethod) { 
 
-        //Get the modele to generate the file of the webpack build
-        $model = __DIR__.'/../models/yaml/webpack_builds.yaml.pw';
-        $content = file_get_contents($model);
-        PwFileManager::createWebpackBuild($encorePath, $content, ["name" => $route_name]);
+            /**** Insert to encore ****/
+            //Get the modele to generate the file of the webpack config
+            $model = __DIR__.'/../models/yaml/webpack_encore.yaml.pw';
+            $content = file_get_contents($model);
+            $encorePath = PwFileManager::createWebpackConfig($content);
 
-        //Get the modele to generate webpack package
-        $model = __DIR__.'/../models/yaml/webpack_packages.yaml.pw';
-        $content = file_get_contents($model);
-        PwFileManager::createWebpackPackage($encorePath, $content, ["name" => $route_name]);
+            //Get the modele to generate the file of the webpack build
+            $model = __DIR__.'/../models/yaml/webpack_builds.yaml.pw';
+            $content = file_get_contents($model);
+            PwFileManager::createWebpackBuild($encorePath, $content, ["name" => $webpackName]);
 
-        /**** Insert to webpack ****/
-        //Get the modele to generate the file of the webpack
-        $model = __DIR__.'\..\models\js\webpack_webpack.js.pw';
-        $content = file_get_contents($model);
-        $webpackPath = PwFileManager::createWebpackWebpack($content, ["name" => $route_name]);
+            //Get the modele to generate webpack package
+            $model = __DIR__.'/../models/yaml/webpack_packages.yaml.pw';
+            $content = file_get_contents($model);
+            PwFileManager::createWebpackPackage($encorePath, $content, ["name" => $webpackName]);
 
-        //Get the modele to generate the file of the webpack require
-        $model = __DIR__.'\..\models\js\webpack_require.js.pw';
-        $content = file_get_contents($model);
-        PwFileManager::createWebpackRequire($webpackPath, $content, ["name" => $route_name]);
+            /**** Insert to webpack ****/
+            //Get the modele to generate the file of the webpack
+            $model = __DIR__.'\..\models\js\webpack_webpack.js.pw';
+            $content = file_get_contents($model);
+            $webpackPath = PwFileManager::createWebpackWebpack($content, ["name" => $webpackName]);
 
-        //Get the modele to generate the file of the webpack module
-        $model = __DIR__.'\..\models\js\webpack_module.js.pw';
-        $content = file_get_contents($model);
-        PwFileManager::createWebpackModule($webpackPath, $content, ["name" => $route_name]);
+            //Get the modele to generate the file of the webpack require
+            $model = __DIR__.'\..\models\js\webpack_require.js.pw';
+            $content = file_get_contents($model);
+            PwFileManager::createWebpackRequire($webpackPath, $content, ["name" => $webpackName]);
+
+            //Get the modele to generate the file of the webpack module
+            $model = __DIR__.'\..\models\js\webpack_module.js.pw';
+            $content = file_get_contents($model);
+            PwFileManager::createWebpackModule($webpackPath, $content, ["name" => $webpackName]);
+        }
 
         /**** Generate asset folder ***/
         //Get the modele to generate the file index in assets modules directiory
@@ -248,7 +254,7 @@ class PageGenerator {
         $model = __DIR__.'\..\models\js\assets_entrypoint.js.pw';
         $content = file_get_contents($model);
         PwFileManager::addEntrypoint($pathWebpack, $content , [
-            "name" => $route_name,
+            "name" => $entryPointName,
             "path" => "$pathIndex"
         ]);
         
