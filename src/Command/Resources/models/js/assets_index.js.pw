@@ -1,0 +1,11 @@
+import {main} from "./{{main_filename}}";
+import $ from "jquery";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+require('utilities/utilities.js')
+global.$ = $;
+
+$(document).ready(() => {
+	main();
+});

@@ -1,0 +1,7 @@
+    
+    #[Route('{{route_url}}', name: '{{route_name}}', methods: [{{route_methods}}])]
+    public function {{name}}(Request $request): Response {
+        return $this->render('{{twig}}', [
+            'controller_name' => '{{controller}}',
+        ]);
+    }

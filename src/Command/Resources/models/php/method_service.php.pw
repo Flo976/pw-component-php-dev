@@ -1,0 +1,9 @@
+
+    public function {{name}}(){
+        //TO DO
+        return array(
+            'status' => 200,
+            'message' => '',
+            'data' => []
+        );
+    }

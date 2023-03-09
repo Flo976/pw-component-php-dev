@@ -1,0 +1,2 @@
+            {{name}}:
+                json_manifest_path: '%kernel.project_dir%/public/build/{{name}}/manifest.json'

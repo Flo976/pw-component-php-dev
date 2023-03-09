@@ -5,14 +5,10 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Passion Web"
-        },
-        {
-            "name": "Rivo Link",
-            "email": "rivo.link@gmail.com"
+            "name": "passion-web"
         }
     ],
-    "version": "0.0.12",
+    "version": "0.0.24",
     "require": {
         "php": "^8.0",
         "dompdf/dompdf": "^2.0",

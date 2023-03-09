@@ -51,8 +51,8 @@
             "ref": "a44010c0d06989bd4f154aa07d2542d47caf5b83"
         },
         "files": [
-            "config/packages/routing.yaml",
-            "config/routes.yaml"
+            "./config/packages/routing.yaml",
+            "./config/routes.yaml"
         ]
     }
 }
