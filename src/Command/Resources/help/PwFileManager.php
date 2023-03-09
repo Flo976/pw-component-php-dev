@@ -252,6 +252,8 @@ class PwFileManager
             $params = [
                 "config_path" =>$configPath,
                 "name" =>$componentName,
+                "className" =>$className,
+                "methodName" =>$methodName,
             ]; 
             $content = self::applyParams($content , $params);
             file_put_contents($path, $content);
