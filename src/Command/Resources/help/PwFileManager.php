@@ -65,7 +65,7 @@ class PwFileManager
     public static function createLayout($content=''){
         $project_dir = getcwd();
         $templates = '\templates';
-        $layout = '\layout.twig.html';
+        $layout = '\layout.html.twig';
         $pathToCreate = "$project_dir$templates";
         
         if(!file_exists($pathToCreate)){

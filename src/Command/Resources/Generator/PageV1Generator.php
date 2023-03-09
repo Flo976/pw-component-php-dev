@@ -64,7 +64,7 @@ class PageV1Generator {
         //Twig file
         $twig_path = $twig_path
                         ? $twig_path
-                        : PwStr::asRoutePath($route_name).".twig.html";
+                        : PwStr::asRoutePath($route_name).".html.twig";
 
         //Request type
         $request = $request ? $request : 'POST, GET';
@@ -96,7 +96,7 @@ class PageV1Generator {
                             "title" => $name,
                             "description" => $name,
                             "entrypoint" => $entryPointName,
-                            "layout" => 'layout.twig.html',
+                            "layout" => 'layout.html.twig',
                             "webpack_config" => $webpackName,
                         ]);
 

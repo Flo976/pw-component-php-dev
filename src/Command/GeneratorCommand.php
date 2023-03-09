@@ -29,7 +29,7 @@ class GeneratorCommand extends Command {
         $type = strtolower(PwStr::asClassName(PwStr::getRandomType()));
         $route_name = $type."_".strtolower($term)."_".$method;
         $uri = PwStr::asRoutePath($route_name);
-        $twig = PwStr::asRoutePath($route_name).".twig.html";
+        $twig = PwStr::asRoutePath($route_name).".html.twig";
         $this
             ->addArgument('type', InputArgument::REQUIRED, sprintf('Type of class to generate a page or an API or a service (e.g. <fg=yellow>%s</>)', $type))
             ->addArgument('name', InputArgument::OPTIONAL, sprintf('Class name of the page/api/service to create or update (e.g. <fg=yellow>%s</>)', $term))

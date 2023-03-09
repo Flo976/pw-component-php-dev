@@ -139,7 +139,7 @@ class PageGenerator {
         $route_url = $io->askQuestion($question);
 
         //Question for twig file
-        $twig_path = PwStr::asRoutePath($route_name).".twig.html";
+        $twig_path = PwStr::asRoutePath($route_name).".html.twig";
         $questionText = "Twig path file of the methode <fg=blue>$methodName</>";
         $question = self::question($questionText, $twig_path);
         $twig_path = $io->askQuestion($question);
@@ -176,7 +176,7 @@ class PageGenerator {
         PwFileManager:: createFile($twigDirectory, $content, [
                             "title" => $controllerName,
                             "entrypoint" => $entryPointName,
-                            "layout" => 'layout.twig.html',
+                            "layout" => 'layout.html.twig',
                             "webpack_config" => $webpackName,
                             "description" => $controllerName,
                         ]);

@@ -10,7 +10,7 @@ If the argument is missing, the command will ask for the page/api/service class 
 
 Example to generate a <info>page front</info> with the method <info>index</info>:
 
-<info>php %command.full_name% page front index -r page_front_index -u /page/front/index -t /page/front/index/index.twig.html --request="GET"</info>
+<info>php %command.full_name% page front index -r page_front_index -u /page/front/index -t /page/front/index/index.html.twig --request="GET"</info>
 
 Example to generate a <info>api front</info> with the method <info>index</info>:
 
