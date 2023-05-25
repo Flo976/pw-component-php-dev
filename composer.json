@@ -1,14 +1,22 @@
 {
-    "name": "atrika/pw-components-php",
+    "name": "passion-web/pw-components-php-dev",
     "description": "PW Components",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "passion-web"
+            "name": "Passion Web"
+        },
+        {
+            "name": "Rivo Link",
+            "email": "rivo.link@gmail.com"
+        },
+        {
+            "name": "jimmyMisa",
+            "email": "jimmy.samuel.andriamparany.pro@gmail.com"
         }
     ],
-    "version": "0.0.27",
+    "version": "0.0.28",
     "require": {
         "php": "^8.0",
         "dompdf/dompdf": "^2.0",

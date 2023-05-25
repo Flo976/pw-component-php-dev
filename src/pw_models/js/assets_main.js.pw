@@ -1,0 +1,12 @@
+import {{component_name}} from "{{component_path}}";
+
+import { setChildView } from "vue/helper/renderVue.js";
+import { getConfig } from "./{{config_filename}}";
+
+function main() {
+    getConfig().component = {};
+    
+    setChildView("#app_body_wrapper", {{component_name}}, getConfig().component);
+}
+
+export { main };

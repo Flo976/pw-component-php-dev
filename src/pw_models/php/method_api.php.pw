@@ -1,0 +1,10 @@
+    
+    #[Route('{{route_url}}', name: '{{route_name}}', methods: ['{{route_methods}}'])]
+    public function {{name}}({{params}}): Response {
+        $result = [
+            "status" => 200,
+            "message" => "Succès",
+        ];
+
+        return $this->json($result);
+    }

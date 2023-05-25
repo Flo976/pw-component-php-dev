@@ -1,0 +1,1 @@
+        {{name}}: '%kernel.project_dir%/public/build/{{name}}'

@@ -114,5 +114,4 @@ class GeneratorCommand extends Command {
 
         return $question;
     }
-
 }
