@@ -1,5 +1,5 @@
 {
-    "name": "rivolink/pw-components-php",
+    "name": "passion-web/pw-components-php-dev",
     "description": "PW Components",
     "type": "library",
     "license": "MIT",
@@ -10,9 +10,13 @@
         {
             "name": "Rivo Link",
             "email": "rivo.link@gmail.com"
+        },
+        {
+            "name": "jimmyMisa",
+            "email": "jimmy.samuel.andriamparany.pro@gmail.com"
         }
     ],
-    "version": "0.0.9",
+    "version": "0.0.10",
     "require": {
         "php": "^8.0",
         "dompdf/dompdf": "^2.0",
