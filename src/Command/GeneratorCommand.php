@@ -2,9 +2,13 @@
 
 namespace Pw\Command;
 
+use Pw\Generator\AssetsGenerator;
 use Pw\Generator\MethodGenerator;
 use Pw\Generator\WebpackGenerator;
 use Pw\Generator\ControllerGenerator;
+use Pw\Generator\TwigGenerator;
+
+use Pw\Generator\Helper\CoreHelper;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -21,24 +25,39 @@ class GeneratorCommand extends Command {
 
     // symfony console pw-generator:generate
     protected function execute(InputInterface $input, OutputInterface $output): int {
+        $param_controller = "src/Controller/Front/FrontController";
+        $param_name = "ProtectionDesDonnees";
 
-        $path = ControllerGenerator::createController("FrontController");
-        MethodGenerator::insertPageMethod($path, [
-            "route_url" => "/protection-des-donnees",
-            "route_name" => "protection_des_donnees",
-            "name" => "protectionDesDonnees",
-            "twig" => "/protection_des_donnees.html.twig",
+        $route_name = CoreHelper::camelToSnake($param_name);
+        $route_url = "/".str_replace("_", "-", $route_name);
+
+        // ---------- Begin here
+
+        $controller = ControllerGenerator::createController($param_controller);
+        $domain = CoreHelper::getDomain($controller);
+
+        $webpack_config = WebpackGenerator::createConfig($domain);
+
+        $assets = AssetsGenerator::createFiles($controller, $param_name);
+        $index = CoreHelper::getIn($assets, "index");
+
+        $entrypoint = AssetsGenerator::addEntrypoint($webpack_config, $index);
+
+        $twig = TwigGenerator::createTwig([
+            "name" => $param_name,
+            "controller" => $controller,
+            "entrypoint" => $entrypoint,
+            "webpack_config" => $webpack_config,
         ]);
+        $twig_template = TwigGenerator::getTemplatePath($twig);
 
-        $path = ControllerGenerator::createController("src/Controller/Api/FrontApiController");
-        MethodGenerator::insertApiMethod($path, [
-            "route_url" => "/api/connexion",
-            "route_name" => "api_connexion",
-            "name" => "apiConnexion",
+        // add methode to controller
+        MethodGenerator::insertPageMethod($controller, [
+            "route_url" => $route_url,
+            "route_name" => $route_name,
+            "name" => $param_name,
+            "twig" => $twig_template,
         ]);
-
-        WebpackGenerator::createConfig("front");
-        WebpackGenerator::createConfig("admin");
 
         return Command::SUCCESS;
     }

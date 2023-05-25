@@ -28,21 +28,23 @@ class ControllerGenerator {
         $default_dir = self::getDefaultDir();
         $project_dir = CoreHelper::getProjectDir();
 
+        if(!is_int(strpos($name, ".php"))){
+            $name = "$name.php";
+        }
+
         if(CoreHelper::isPath($name)){
             $path = "$project_dir/$name";
-
-            if(!is_int(strpos($name, ".php"))){
-                $path = "$project_dir/$name.php";
-            }
-
             return $path;
         }
         else {
-            $path = "$default_dir/$name.php";
-            return $path;
+            $domain = explode("Controller", $name)[0];
+            
+            if(in_array(strtolower($domain), CoreHelper::DOMAINS)){
+                return "$default_dir/$domain/$name";
+            }
         }
 
-        return null;
+        return "$default_dir/$name";
     }
 
     public static function getNamespace($name){
@@ -63,10 +65,6 @@ class ControllerGenerator {
 
         if(is_file($path)){
             return $path;
-        }
-
-        if(!file_exists($dir)){
-            mkdir($dir, 0775, true);
         }
 
         $text = FileHelper::getCompiled(self::FILE, [

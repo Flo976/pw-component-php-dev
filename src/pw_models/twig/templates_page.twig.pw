@@ -2,8 +2,10 @@
 
 {% block title %}{{title}}{% endblock %}
 
+{% block description %}{{description}}{% endblock %}
+
 {% block stylesheets %}
-    {{ encore_entry_link_tags('{{entrypoint}}', null, '{{webpack_config}}') }} 
+    [[:brace]] encore_entry_link_tags('{{entrypoint}}', null, '{{webpack_config}}') [[brace:]]
 {% endblock %}
 
 {% block variables_javascripts %}
@@ -12,5 +14,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ encore_entry_script_tags('{{entrypoint}}', null, '{{webpack_config}}') }}
+    [[:brace]] encore_entry_script_tags('{{entrypoint}}', null, '{{webpack_config}}') [[brace:]]
 {% endblock %}

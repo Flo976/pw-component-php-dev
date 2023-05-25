@@ -42,7 +42,7 @@ class MethodGenerator {
         $route_url = $get($data, "route_url");
         $route_name = $get($data, "route_name");
         $route_methods = $get($data, "route_methods");
-        $name = $get($data, "name");
+        $name = lcfirst($get($data, "name"));
         $params = $get($data, "params");
         $twig = $get($data, "twig");
         $controller = basename($path, ".php");

@@ -6,11 +6,8 @@ use Pw\Generator\Helper\FileHelper;
 
 class TwigGenerator {
 
-    const DEFAULT_DOMAINS = [
-        "front",
-        "admin",
-        "member",
-    ];
+    const FILE_PAGE = "templates_page.twig.pw";
+    const FILE_LAYOUT = "templates_layout.twig.pw";
 
     public static function getDefaultDir(){
         $project_dir = CoreHelper::getProjectDir();
@@ -22,70 +19,91 @@ class TwigGenerator {
         return $base_path;
     }
 
-    public static function getPath($name){
-        $default_dir = self::getDefaultDir();
+    public static function getTemplatePath($path){
+        $template_pos = strpos($path, "templates");
 
-        $path = "$default_dir/$name";
+        if(is_int($template_pos)){
+            $template_path = substr($path, $template_pos+10);
+            return $template_path;
+        }
+
+        return $path;
+    }
+
+    public static function getPath($controller, $name){
+        $default_dir = self::getDefaultDir();
+        $controller_subdir = CoreHelper::getControlerSubdir($controller);
 
         if(!is_int(strpos($name, ".html.twig"))){
-            $path = "$default_dir/$name.html.twig";
+            $name = "$name.html.twig";
+        }
+
+        if($controller_subdir){
+            $path = "$default_dir/$controller_subdir/$name";
+        }
+        else {
+            $path = "$default_dir/$name";
         }
 
         return $path;
     }
 
-    public static function getFilename($name, $extension=false){
-        $path = self::getPath($name);
-        
-        if($extension){
-            return basename($path);
-        }
-
-        return basename($path, ".html.twig");
-    }
-
-    public function createLayout($name=null){
+    public static function createLayout($page=null){
         $dir = self::getDefaultDir();
 
-        if($name){
-            $dir = dirname(self::getPath($name));
+        if($page){
+            $dir = dirname($page);
         }
 
-        $path = "$dir/layout.html.twig";
-
-
-        // TODO
-
-        
-        return $path;
-    }
-
-    public static function createTwig($name){
-        $path = self::getPath($name);
-        $dir = dirname($path);
+        $path = "$dir/layout/index.html.twig";
 
         if(is_file($path)){
             return $path;
         }
 
-        if(!file_exists($dir)){
-            mkdir($dir, 0775, true);
-        }
+        $text = FileHelper::getCompiled(self::FILE_LAYOUT);
 
-        // TODO
-
+        FileHelper::create($path, $text);
+        
         return $path;
     }
 
-    
+    public static function createTwig($data){
+        $get = [CoreHelper::class, "getIn"];
 
-    
+        $name = $get($data, "name");
+        $name = CoreHelper::camelToSnake($name);
 
+        $title = $get($data, "title");
+        $controller = $get($data, "controller");
+        $entrypoint = $get($data, "entrypoint");
+        $description = $get($data, "description");
+        $webpack_config = $get($data, "webpack_config");
 
-    
+        $path = self::getPath($controller, $name);
 
+        if(is_file($path)){
+            return $path;
+        }
 
+        if($webpack_config){
+            $webpack_config = basename($webpack_config, ".js");
+        }
 
+        $layout = self::createLayout($path);
+        $layout_tpath = self::getTemplatePath($layout);
 
+        $text = FileHelper::getCompiled(self::FILE_PAGE, [
+            "name" => $name,
+            "title" => $title,
+            "layout" => $layout_tpath,
+            "description" => $description,
+            "entrypoint" => $entrypoint,
+            "webpack_config" => $webpack_config,
+        ]);
+        
+        FileHelper::create($path, $text);
 
+        return $path;
+    }
 }

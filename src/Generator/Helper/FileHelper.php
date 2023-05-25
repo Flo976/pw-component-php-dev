@@ -14,7 +14,7 @@ class FileHelper {
         $size = $right - $left;
         $type = substr($filename, $left, $size);
 
-        $path = "$project_dir/src/generator/$type/$filename";
+        $path = "$project_dir/src/pw_models/$type/$filename";
 
         if(is_file($path)){
             $text = file_get_contents($path);
@@ -48,6 +48,12 @@ class FileHelper {
     public static function create($path, $text){
         if(is_file($path)){
             return true;
+        }
+
+        $dir = dirname($path);
+
+        if(!file_exists($dir)){
+            mkdir($dir, 0775, true);
         }
 
         file_put_contents($path, $text);
