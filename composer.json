@@ -16,7 +16,6 @@
             "email": "jimmy.samuel.andriamparany.pro@gmail.com"
         }
     ],
-    "version": "0.0.30",
     "require": {
         "php": "^8.0",
         "dompdf/dompdf": "^2.0",
