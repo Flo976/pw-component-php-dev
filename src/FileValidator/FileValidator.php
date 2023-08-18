@@ -379,6 +379,35 @@ class FileValidator
      * @param $file
      * @return boolean
      */
+    public function validateSize($file): bool
+    {
+        if(!$file){
+            return false;
+        }
+        $fileSize = null;
+        if (
+            is_object($file) && 
+            method_exists($file, 'getSize')
+        ) {
+            $fileSize = $file->getSize();
+        }
+        else if (is_string($file) || is_integer($file)) {
+            $fileSize = $file;
+        }
+        if (!$fileSize) {
+            return false;
+        }
+        if ($this->maxFileSize) {
+            return $fileSize <= $this->maxFileSize;
+        }
+        return false;
+    }
+
+
+    /**
+     * @param $file
+     * @return boolean
+     */
     public function validateFile($file): bool
     {
         if (!$file) {
